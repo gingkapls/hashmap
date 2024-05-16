@@ -7,8 +7,8 @@ const LinkedList = class {
   constructor(...pairs) {
     this.#head = null;
     this.#size = 0;
-    for (const {key, value} of pairs) {
-      this.append({key, value});
+    for (const { key, value } of pairs) {
+      this.append({ key, value });
     }
   }
 
@@ -19,7 +19,7 @@ const LinkedList = class {
         ? Math.abs((this.#size + index) % this.#size)
         : index;
 
-  append = ({key, value}) => {
+  append = ({ key, value }) => {
     // List has no nodes
     if (this.#head === null) {
       this.#head = new Node({ key, value });
@@ -37,7 +37,7 @@ const LinkedList = class {
     return this;
   };
 
-  prepend = ({key, value}) => {
+  prepend = ({ key, value }) => {
     this.#head = new Node({ key, value, next: this.#head });
     this.#size += 1;
     return this;
@@ -60,13 +60,37 @@ const LinkedList = class {
   get head() {
     return this.#head;
   }
-  
+
   get tail() {
     let temp = this.#head;
     while (temp?.next != null) {
       temp = temp?.next;
     }
     return temp;
+  }
+
+  #getData = (field) => {
+    const res = [];
+    for (let temp = this.#head; temp != null; temp = temp.next) {
+      res.push(temp[field]);
+    }
+    return res;
+  };
+
+  get values() {
+    return this.#getData("value");
+  }
+
+  get keys() {
+    return this.#getData("key");
+  }
+
+  get entries() {
+    const res = [];
+    for (let temp = this.#head; temp != null; temp = temp.next) {
+      res.push([temp.key, temp.value]);
+    }
+    return res;
   }
 
   at = (index) => {
@@ -96,17 +120,17 @@ const LinkedList = class {
   find = (key) => {
     let temp = this.#head;
     for (let i = 0; temp != null; ++i) {
-      if (temp.key === key) return temp;
+      if (temp.key === key) return i;
       temp = temp.next;
     }
     return null;
   };
 
   // Extra credit
-  insertAt = ({index, key, value}) => {
+  insertAt = ({ index, key, value }) => {
     // insert at head
     if (index === 0) {
-      this.prepend({key, value});
+      this.prepend({ key, value });
       return this;
     }
 
@@ -115,7 +139,7 @@ const LinkedList = class {
 
     // Attach to head
     if (index === 0) {
-      this.prepend({key, value});
+      this.prepend({ key, value });
       return this;
     }
 
