@@ -85,6 +85,13 @@ const HashMap = class {
       []
     );
 
+  entries = () =>
+    this.#table.reduce(
+      (pairs, bucket) =>
+        bucket === undefined ? pairs : pairs.concat(bucket?.entries),
+      []
+    );
+
   get length() {
     return this.#length;
   }

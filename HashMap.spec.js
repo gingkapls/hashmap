@@ -50,20 +50,41 @@ describe("HashMap", () => {
   });
 
   test("gets values of map with multiple elements", () => {
-    expect(new HashMap().set("john", "smith").set("jim", "bob").values()).toEqual(["smith", "bob"]);
+    expect(
+      new HashMap().set("john", "smith").set("jim", "bob").values()
+    ).toEqual(["smith", "bob"]);
   });
-  
+
   test("gets keys of an empty map", () => {
     expect(new HashMap().keys()).toEqual([]);
-  });  
+  });
 
   test("gets keys of a map with one element", () => {
     expect(new HashMap().set("john", "smith").keys()).toEqual(["john"]);
   });
 
   test("gets keys of map with multiple elements", () => {
-    expect(new HashMap().set("john", "smith").set("jim", "bob").keys()).toEqual(["john", "jim"]);
+    expect(new HashMap().set("john", "smith").set("jim", "bob").keys()).toEqual(
+      ["john", "jim"]
+    );
   });
 
+  test("gets entries of an empty map", () => {
+    expect(new HashMap().entries()).toEqual([]);
+  });
 
+  test("gets entries of a map with one element", () => {
+    expect(new HashMap().set("john", "smith").entries()).toEqual([
+      ["john", "smith"],
+    ]);
+  });
+
+  test("gets entries of map with multiple elements", () => {
+    expect(
+      new HashMap().set("john", "smith").set("jim", "bob").entries()
+    ).toEqual([
+      ["john", "smith"],
+      ["jim", "bob"],
+    ]);
+  });
 });
