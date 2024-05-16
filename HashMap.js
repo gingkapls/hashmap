@@ -45,9 +45,9 @@ const HashMap = class {
 
   get = (key) => {
     const index = this.#hash(key);
-    const listIndex = this.#table.at(index).find(key);
+    const listIndex = this.#table.at(index)?.find(key);
 
-    return this.#table.at(index).at(listIndex).value;
+    return this.#table.at(index)?.at(listIndex).value ?? null;
   };
 
   has = (key) => {
@@ -91,6 +91,13 @@ const HashMap = class {
         bucket === undefined ? pairs : pairs.concat(bucket?.entries),
       []
     );
+
+  clear = () => {
+    this.#table.fill(null);
+    this.#length = 0;
+    this.#capacity = 0;
+    return this;
+  };
 
   get length() {
     return this.#length;

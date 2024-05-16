@@ -11,6 +11,10 @@ describe("HashMap", () => {
     ).toBe("fury");
   });
 
+  test("get a non-existent key", () => {
+    expect(new HashMap().get("john")).toBe(null);
+  });
+
   test("checks if a key is set", () => {
     expect(
       new HashMap().set("john", "smith").set("john", "fury").has("john")
@@ -86,5 +90,9 @@ describe("HashMap", () => {
       ["john", "smith"],
       ["jim", "bob"],
     ]);
+  });
+
+  test("clears an empty list", () => {
+    expect(new HashMap().set("john", "smith").clear().get("john")).toBe(null);
   });
 });
