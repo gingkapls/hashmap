@@ -8,12 +8,19 @@ const HashMap = class {
   #capacity;
   #loadFactor;
 
-  constructor() {
+  constructor(...pairs) {
     this.#table = Array.from({ length: 16 });
     this.#capacity = 0;
     this.#loadFactor = 0.75;
     this.#length = 0;
     this.#primeNumber = 31;
+    for (const pair of pairs) {
+      this.set(pair[0], pair[1]);
+    }
+  }
+
+  get length() {
+    return this.#length;
   }
 
   #hash = (key) => {
@@ -26,17 +33,35 @@ const HashMap = class {
     return hashCode;
   };
 
+  #isLoaded = () =>
+    this.#capacity / this.#table.length < this.#loadFactor ? false : true;
+
+  #grow = () => {
+    const entries = this.entries();
+    const newSize = this.#table.length * 2;
+    this.#table = Array.from({ length: newSize });
+
+    this.#capacity = 0;
+    this.#length = 0;
+    entries.forEach((pair) => this.set(pair[0], pair[1]));
+    return this;
+  };
+
   set = (key, value) => {
+    if (this.#isLoaded()) this.#grow();
+
     const index = this.#hash(key);
-    if (this.#table.at(index) === undefined) {
+    const bucket = this.#table.at(index);
+
+    if (bucket === undefined) {
       this.#table[index] = new LinkedList({ key, value });
       this.#capacity += 1;
       this.#length += 1;
-    } else if (this.#table.at(index).contains(key)) {
-      const listIndex = this.#table.at(index).find(key);
-      this.#table.at(index).at(listIndex).value = value;
+    } else if (bucket.contains(key)) {
+      const listIndex = bucket.find(key);
+      bucket.at(listIndex).value = value;
     } else {
-      this.#table.at(index).append({ key, value });
+      bucket.append({ key, value });
       this.#length += 1;
     }
 
@@ -98,10 +123,6 @@ const HashMap = class {
     this.#capacity = 0;
     return this;
   };
-
-  get length() {
-    return this.#length;
-  }
 };
 
 module.exports = HashMap;

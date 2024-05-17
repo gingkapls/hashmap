@@ -92,7 +92,21 @@ describe("HashMap", () => {
     ]);
   });
 
-  test("clears an empty list", () => {
+  test("clears an empty map", () => {
+    expect(new HashMap().clear().get("john")).toBe(null);
+  });
+
+  test("clears a map", () => {
     expect(new HashMap().set("john", "smith").clear().get("john")).toBe(null);
   });
+  
+  test("constructs a map with one item", () => {
+    expect(new HashMap(["john", "smith"]).get("john")).toBe("smith");
+  });
+
+   test("constructs a map with multiple items", () => {
+    expect(new HashMap(["john", "smith"], ["jim", "bob"]).entries("jim")).toEqual([["john", "smith"], ["jim", "bob"]]);
+  });
+
+ 
 });
