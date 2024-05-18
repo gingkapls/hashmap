@@ -4,11 +4,11 @@ const LinkedList = class {
   #head;
   #size;
 
-  constructor(...pairs) {
+  constructor(...items) {
     this.#head = null;
     this.#size = 0;
-    for (const { key, value } of pairs) {
-      this.append({ key, value });
+    for (const item of items) {
+      this.append(item);
     }
   }
 
@@ -19,10 +19,10 @@ const LinkedList = class {
         ? Math.abs((this.#size + index) % this.#size)
         : index;
 
-  append = ({ key, value }) => {
+  append = (item) => {
     // List has no nodes
     if (this.#head === null) {
-      this.#head = new Node({ key, value });
+      this.#head = new Node(item);
       this.#size += 1;
       return this;
     }
@@ -31,14 +31,14 @@ const LinkedList = class {
     while (temp.next != null) {
       temp = temp.next;
     }
-    temp.next = new Node({ key, value });
+    temp.next = new Node(item);
 
     this.#size += 1;
     return this;
   };
 
-  prepend = ({ key, value }) => {
-    this.#head = new Node({ key, value, next: this.#head });
+  prepend = (item) => {
+    this.#head = new Node({ ...item, next: this.#head });
     this.#size += 1;
     return this;
   };
@@ -46,8 +46,10 @@ const LinkedList = class {
   toString = () => {
     let temp = this.#head;
     let str = "";
+    let item = "";
     while (temp != null) {
-      str += `( ${temp.value} ) -> `;
+      item = Object.entries(temp).reduce((str, field) => str += field.join(":") + " ", "").trim()
+      str += `( ${item} ) -> `;
       temp = temp.next;
     }
     return `${str}null`;
@@ -77,8 +79,8 @@ const LinkedList = class {
     return res;
   };
 
-  get values() {
-    return this.#getData("value");
+  get (field) {
+    return this.#getData(field);
   }
 
   get keys() {
@@ -87,8 +89,10 @@ const LinkedList = class {
 
   get entries() {
     const res = [];
+    let item;
     for (let temp = this.#head; temp != null; temp = temp.next) {
-      res.push([temp.key, temp.value]);
+      item = Object.entries(temp);
+      res.push(item);
     }
     return res;
   }
@@ -108,29 +112,29 @@ const LinkedList = class {
     return this.#size === 0 ? this.removeAt(0) : this.removeAt(this.#size - 1);
   };
 
-  contains = (key) => {
+  contains = (field, value) => {
     let temp = this.#head;
     while (temp != null) {
-      if (temp.key === key) return true;
+      if (temp[field] === value) return true;
       temp = temp.next;
     }
     return false;
   };
 
-  find = (key) => {
+  find = (field, value) => {
     let temp = this.#head;
     for (let i = 0; temp != null; ++i) {
-      if (temp.key === key) return i;
+      if (temp[field] === value) return i;
       temp = temp.next;
     }
     return null;
   };
 
   // Extra credit
-  insertAt = ({ index, key, value }) => {
+  insertAt = ({ index, ...data }) => {
     // insert at head
     if (index === 0) {
-      this.prepend({ key, value });
+      this.prepend(data);
       return this;
     }
 
@@ -139,7 +143,7 @@ const LinkedList = class {
 
     // Attach to head
     if (index === 0) {
-      this.prepend({ key, value });
+      this.prepend(data);
       return this;
     }
 
@@ -148,7 +152,7 @@ const LinkedList = class {
       prev = prev.next;
     }
 
-    const curr = new Node({ key, value, next: prev.next });
+    const curr = new Node({ ...data, next: prev.next });
     prev.next = curr;
 
     return this;
