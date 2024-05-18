@@ -117,27 +117,27 @@ describe("LinkedList", () => {
   });
 
   test("contains with empty list returns false", () => {
-    expect(new LinkedList().contains(0)).toEqual(false);
+    expect(new LinkedList().contains('value', 0)).toEqual(false);
   });
 
   test("contains returns true if element is present", () => {
-    expect(new LinkedList(0, 1, 2).contains(1)).toEqual(true);
+    expect(new LinkedList(0, 1, 2).contains('value', 1)).toEqual(true);
   });
 
   test("contains returns false if element is not present", () => {
-    expect(new LinkedList(0, 1, 2).contains(5)).toEqual(false);
+    expect(new LinkedList(0, 1, 2).contains('value', 5)).toEqual(false);
   });
 
   test("find in empty list", () => {
-    expect(new LinkedList().find(5)).toEqual(null);
+    expect(new LinkedList().find('value', 5)).toEqual(null);
   });
 
   test("find in a list with one element ", () => {
-    expect(new LinkedList(0).find(0)).toEqual(0);
+    expect(new LinkedList(0).find('value', 0)).toEqual(0);
   });
 
   test("find in a list with multiple elements", () => {
-    expect(new LinkedList(0, 1, 2).find(2)).toEqual(2);
+    expect(new LinkedList(0, 1, 2).find('value', 2)).toEqual(2);
   });
 
   test("insert element at 0 index in list", () => {

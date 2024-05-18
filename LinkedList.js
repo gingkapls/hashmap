@@ -20,6 +20,7 @@ const LinkedList = class {
         : index;
 
   append = (item) => {
+    if (typeof item !== "object") item = { value: item };
     // List has no nodes
     if (this.#head === null) {
       this.#head = new Node(item);
@@ -38,6 +39,8 @@ const LinkedList = class {
   };
 
   prepend = (item) => {
+    if (typeof item !== "object") item = { value: item };
+
     this.#head = new Node({ ...item, next: this.#head });
     this.#size += 1;
     return this;
@@ -48,7 +51,7 @@ const LinkedList = class {
     let str = "";
     let item = "";
     while (temp != null) {
-      item = Object.entries(temp).reduce((str, field) => str += field.join(":") + " ", "").trim()
+      item = Object.entries(temp).filter(item => item[0] !== "next").reduce((str, field) => str += field.join(":") + " ", "").trim()
       str += `( ${item} ) -> `;
       temp = temp.next;
     }
@@ -71,7 +74,7 @@ const LinkedList = class {
     return temp;
   }
 
-  #getData = (field) => {
+  get = (field) => {
     const res = [];
     for (let temp = this.#head; temp != null; temp = temp.next) {
       res.push(temp[field]);
@@ -79,19 +82,11 @@ const LinkedList = class {
     return res;
   };
 
-  get (field) {
-    return this.#getData(field);
-  }
-
-  get keys() {
-    return this.#getData("key");
-  }
-
-  get entries() {
+  entries = (...fields) => {
     const res = [];
     let item;
     for (let temp = this.#head; temp != null; temp = temp.next) {
-      item = Object.entries(temp);
+      item = fields.map(field => temp[field]);
       res.push(item);
     }
     return res;
@@ -131,10 +126,11 @@ const LinkedList = class {
   };
 
   // Extra credit
-  insertAt = ({ index, ...data }) => {
+  insertAt = (index, item) => {
+    if (typeof item !== 'object') item = { value: item };
     // insert at head
     if (index === 0) {
-      this.prepend(data);
+      this.prepend(item);
       return this;
     }
 
@@ -143,7 +139,7 @@ const LinkedList = class {
 
     // Attach to head
     if (index === 0) {
-      this.prepend(data);
+      this.prepend(item);
       return this;
     }
 
@@ -152,7 +148,7 @@ const LinkedList = class {
       prev = prev.next;
     }
 
-    const curr = new Node({ ...data, next: prev.next });
+    const curr = new Node({ ...item, next: prev.next });
     prev.next = curr;
 
     return this;
