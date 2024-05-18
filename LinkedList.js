@@ -51,7 +51,7 @@ const LinkedList = class {
     let str = "";
     let item = "";
     while (temp != null) {
-      item = Object.entries(temp).filter(item => item[0] !== "next").reduce((str, field) => str += field.join(":") + " ", "").trim()
+      item = Object.values(temp).filter(item => typeof item !== "object").reduce((str, field) => str += field + " ", "").trim()
       str += `( ${item} ) -> `;
       temp = temp.next;
     }
