@@ -1,5 +1,4 @@
 const LinkedList = require("./LinkedList");
-// const Node = require("./Node");
 
 const HashMap = class {
   #table;
@@ -99,21 +98,21 @@ const HashMap = class {
   values = () =>
     this.#table.reduce(
       (values, bucket) =>
-        bucket === undefined ? values : values.concat(bucket?.values),
+        bucket === undefined ? values : values.concat(bucket?.get('value')),
       []
     );
 
   keys = () =>
     this.#table.reduce(
       (keys, bucket) =>
-        bucket === undefined ? keys : keys.concat(bucket?.keys),
+        bucket === undefined ? keys : keys.concat(bucket?.get('key')),
       []
     );
 
   entries = () =>
     this.#table.reduce(
       (pairs, bucket) =>
-        bucket === undefined ? pairs : pairs.concat(bucket?.entries),
+        bucket === undefined ? pairs : pairs.concat(bucket?.entries('key', 'value')),
       []
     );
 
